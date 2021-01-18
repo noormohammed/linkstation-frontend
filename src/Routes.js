@@ -5,6 +5,7 @@ import { RouteWithLayout } from './components';
 import { Minimal as MinimalLayout } from './layouts';
 
 import {
+  LinkStation as LinkStationView,
   Account as AccountView,
   NotFound as NotFoundView
 } from './views';
@@ -13,10 +14,16 @@ const Routes = () => {
   return (
     <Switch>
       <RouteWithLayout
-        component={AccountView}
+        component={LinkStationView}
         exact
         layout={MinimalLayout}
         path="/"
+      />
+      <RouteWithLayout
+        component={AccountView}
+        exact
+        layout={MinimalLayout}
+        path="/account"
       />
       <RouteWithLayout
         component={NotFoundView}

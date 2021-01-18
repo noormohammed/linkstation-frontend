@@ -4,6 +4,13 @@ const checked = (value, options) => {
   }
 };
 
+const empty = (value, options) => {
+  if (!value) {
+    return options.message || 'cannot be empty';
+  }
+};
+
 export default {
-  checked
+  checked,
+  empty
 };
