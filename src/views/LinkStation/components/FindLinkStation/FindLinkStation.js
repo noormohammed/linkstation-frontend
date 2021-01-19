@@ -78,30 +78,30 @@ const FindLinkStation = props => {
     setIsSearching(showHide)
   };
 
-  const handleFindClick = (data) => {
+  const handleFindClick = async (data) => {
     handleIsSearching(true);
-    const result = postData(data);
-    console.log(result);
+    const result = await postData(data);
+    if (result && result.message) {
+      alert(result.message);
+    }
     setTimeout(() => {
       handleIsSearching(false);
     }, 1000);
   }
 
-  const postData = (data) => {
+  const postData = async (data) => {
     const body = {
-      deviceLocation: {
-        x: data.x,
-        y: data.y
+      devicePoint: {
+        x: Number(data.x),
+        y: Number(data.y)
       },
-      linkStationLocations: JSON.parse(data.locations)
+      linkStationPoints: JSON.parse(data.locations)
     };
 
     try {
-      const response = axios.post(`${REACT_APP_BACKEND_API}/linkstation/find`, body)
-      .then(response => console.log(response))
-      .catch(e => console.log(e));
-
-      return response.status === 200 ? response.message : false;
+      const result = await axios.post(`${REACT_APP_BACKEND_API}/linkstation/findLinkStationForDevice`, body)
+      if (result.status !== 200) return false;
+      return result.data;
     } catch(e) {
       console.log(e);
       return false;
@@ -119,13 +119,13 @@ const FindLinkStation = props => {
         onSubmit={handleSubmit(handleFindClick)}
       >
         <CardHeader
-          subheader="Searching the most suitable/nearest link station with max power for the given device location"
+          subheader="Searching the most suitable/nearest link station with maximum power for the given device location"
           title="Find Link Station"
         />
         <Divider />
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Link Station Locations
+            Link Station Locations with Reach
           </Typography>
           <Grid
             container
@@ -133,13 +133,13 @@ const FindLinkStation = props => {
           >
             <Grid
               item
-              md={12}
-              xs={12}
+              md={6}
+              xs={6}
             >
               <TextField
                 fullWidth
                 multiline
-                rows={12}                
+                rows={12}
                 helperText="Please specify the link station locations in JSON format"
                 label="Locations & Reach"
                 margin="dense"
@@ -167,8 +167,8 @@ const FindLinkStation = props => {
           >
             <Grid
               item
-              md={4}
-              xs={12}
+              md={3}
+              xs={6}
             >
               <TextField
                 fullWidth
@@ -193,11 +193,11 @@ const FindLinkStation = props => {
                 helperText={errors.x && errors.x.message}
               />
             </Grid>
-            
+
             <Grid
               item
-              md={4}
-              xs={12}
+              md={3}
+              xs={6}
             >
               <TextField
                 fullWidth
@@ -223,6 +223,8 @@ const FindLinkStation = props => {
               />
             </Grid>
           </Grid>
+
+          <Divider orientation="vertical" flexItem />
         </CardContent>
         <Divider />
         <CardActions className={classes.pull_right}>
