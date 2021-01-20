@@ -26,8 +26,8 @@ const useStyles = makeStyles(() => ({
  * return (
  *  <DisplayResult results={resultObject} />
  * )
- * @param {*} props any props for this component
- * @returns {*} HTML to display results on the page
+ * @param  {*} props any props for this component
+ * @return {*} HTML to display results on the page
  */
 const DisplayResult = props => {
   const classes = useStyles();
