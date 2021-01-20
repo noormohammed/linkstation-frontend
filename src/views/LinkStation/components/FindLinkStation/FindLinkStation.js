@@ -24,7 +24,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const defaultLinkStationLocations = [
+/**
+ * Default link station points as mentioned in the problem
+ */
+const defaultLinkStationPoints = [
   {
     "x": 0,
     "y": 0,
@@ -44,11 +47,17 @@ const defaultLinkStationLocations = [
 
 const { REACT_APP_BACKEND_API } = process.env;
 
+/**
+ * FindLinkStation component for find the most suitable link station for a given device point
+ *
+ * @param {*} props  module props
+ */
 const FindLinkStation = props => {
-  const { className, ...rest } = props;
-
   const classes = useStyles();
 
+  /**
+   * Default properties of the input of type=number for x & y points
+   */
   const inputPropsNumber = {
     min: 0,
     max: 200,
@@ -56,16 +65,27 @@ const FindLinkStation = props => {
 
   const [isSearching, setIsSearching] = useState(false);
 
+  /**
+   * Default state of form values
+   */
   const [values, setValues] = useState({
     x: 0,
     y: 0,
-    locations: JSON.stringify(defaultLinkStationLocations),
+    locations: JSON.stringify(defaultLinkStationPoints),
   });
 
+  /**
+   * Form Validation
+   */
   const { register, errors, handleSubmit } = useForm({
     criteriaMode: "all"
   });
 
+  /**
+   * Method to set state of values when form values updat
+   *
+   * @param {object} event event handler for this method
+   */
   const handleChange = event => {
     setValues({
       ...values,
@@ -73,22 +93,37 @@ const FindLinkStation = props => {
     });
   };
 
+  /**
+   * Method to set state of isSearching
+   *
+   * @param {boolean} showHide true|false
+   */
   const handleIsSearching = (showHide) => {
     // setIsSearching(!isSearching);
     setIsSearching(showHide)
   };
 
+  /**
+   * Method to handle Find button click after validation
+   *
+   * @param {object} data object of validated form values
+   */
   const handleFindClick = async (data) => {
     handleIsSearching(true);
     const result = await postData(data);
     if (result && result.message) {
-      alert(result.message);
+      props.sendResult(result);
     }
     setTimeout(() => {
       handleIsSearching(false);
     }, 1000);
   }
 
+  /**
+   * Posts data to the backend api to find the most suitable link station for the given device
+   *
+   * @param {*} data form data
+   */
   const postData = async (data) => {
     const body = {
       devicePoint: {
@@ -99,7 +134,7 @@ const FindLinkStation = props => {
     };
 
     try {
-      const result = await axios.post(`${REACT_APP_BACKEND_API}/linkstation/findLinkStationForDevice`, body)
+      const result = await axios.post(`${REACT_APP_BACKEND_API}/linkstation/findLinkStationForDevice`, body);
       if (result.status !== 200) return false;
       return result.data;
     } catch(e) {
@@ -110,8 +145,7 @@ const FindLinkStation = props => {
 
   return (
     <Card
-      {...rest}
-      className={clsx(classes.root, className)}
+      className={clsx(classes.root)}
     >
       <form
         autoComplete="off"
@@ -119,7 +153,7 @@ const FindLinkStation = props => {
         onSubmit={handleSubmit(handleFindClick)}
       >
         <CardHeader
-          subheader="Searching the most suitable/nearest link station with maximum power for the given device location"
+          subheader="Searching the most suitable/nearest link station with maximum power for the given device point"
           title="Find Link Station"
         />
         <Divider />
@@ -133,8 +167,8 @@ const FindLinkStation = props => {
           >
             <Grid
               item
-              md={6}
-              xs={6}
+              md={12}
+              xs={12}
             >
               <TextField
                 fullWidth
@@ -167,7 +201,7 @@ const FindLinkStation = props => {
           >
             <Grid
               item
-              md={3}
+              md={6}
               xs={6}
             >
               <TextField
@@ -196,7 +230,7 @@ const FindLinkStation = props => {
 
             <Grid
               item
-              md={3}
+              md={6}
               xs={6}
             >
               <TextField
@@ -227,19 +261,14 @@ const FindLinkStation = props => {
           <Divider orientation="vertical" flexItem />
         </CardContent>
         <Divider />
-        <CardActions className={classes.pull_right}>
+        <CardActions>
           <Button
             type="submit"
             color="primary"
             variant="contained"
           >
-            Find
+            {isSearching ? 'Searching ..' : 'Find'}
           </Button>
-          {isSearching && (
-            <Typography variant="body2" gutterBottom>
-              Searching ...
-            </Typography>
-          )}
         </CardActions>
       </form>
     </Card>
@@ -247,7 +276,7 @@ const FindLinkStation = props => {
 };
 
 FindLinkStation.propTypes = {
-  className: PropTypes.string
+  sendResult: PropTypes.func.isRequired
 };
 
 export default FindLinkStation;

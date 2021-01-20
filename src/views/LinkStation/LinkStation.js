@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
-import { FindLinkStation } from './components';
+import { FindLinkStation, DisplayResult } from './components';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -10,8 +10,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+/**
+ * Main Link Station Module
+ */
 const LinkStation = () => {
   const classes = useStyles();
+
+  const [result, setResult] = useState({});
+
+  const callbackFindLinkStation = (res) => {
+    if (!res) setResult('');
+    setResult(res);
+  };
 
   return (
     <div className={classes.root}>
@@ -19,23 +29,24 @@ const LinkStation = () => {
         container
         spacing={4}
       >
-        {/* <Grid
+        <Grid
           item
-          lg={4}
+          lg={6}
           md={6}
           xl={4}
           xs={12}
         >
-          <AccountProfile />
-        </Grid> */}
+          <FindLinkStation sendResult={callbackFindLinkStation}/>
+        </Grid>
+
         <Grid
           item
-          lg={12}
-          md={12}
-          xl={12}
+          lg={6}
+          md={6}
+          xl={4}
           xs={12}
         >
-          <FindLinkStation />
+          <DisplayResult results={result} />
         </Grid>
       </Grid>
     </div>
