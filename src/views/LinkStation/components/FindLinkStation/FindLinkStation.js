@@ -146,7 +146,10 @@ const FindLinkStation = props => {
       return result.data;
     } catch(e) {
       console.log(e);
-      return false;
+      return {
+        'status': 'error',
+        'message': e.message
+      };
     }
   };
 
