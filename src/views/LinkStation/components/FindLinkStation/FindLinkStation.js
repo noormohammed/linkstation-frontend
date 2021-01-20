@@ -57,7 +57,7 @@ const { REACT_APP_BACKEND_API } = process.env;
  *  <FindLinkStation sendResult={resultCallback} />
  * )
  * @param {*} props any props for this component
- * @returns HTML to display link station form on the page
+ * @returns {*} HTML to display link station form on the page
  */
 const FindLinkStation = props => {
   const classes = useStyles();
