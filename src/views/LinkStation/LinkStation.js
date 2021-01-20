@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
  *
  * @component
  * @example
- * return (<LinkStation />);
+ * return (<LinkStation />)
+ * @returns HTML for the LinkStation module
  */
 const LinkStation = () => {
   const classes = useStyles();
