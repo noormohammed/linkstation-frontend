@@ -16,7 +16,16 @@ const useStyles = makeStyles(() => ({
 
 /**
  * DisplayResult component for displaying results of FindLinkStation component
- * @param {*} props module props
+ *
+ * @component
+ * @example
+ * const resultObject = {
+ *  'status': 'success',
+ *  'message: 'Best link station for point 20,20 is 20,20 with power 25'
+ * }
+ * return (
+ *  <DisplayResult results={resultObject} />
+ * )
  */
 const DisplayResult = props => {
   const classes = useStyles();
@@ -43,7 +52,6 @@ const DisplayResult = props => {
 };
 
 DisplayResult.propTypes = {
-  className: PropTypes.string,
   results: PropTypes.object.isRequired
 };
 

@@ -50,7 +50,12 @@ const { REACT_APP_BACKEND_API } = process.env;
 /**
  * FindLinkStation component for find the most suitable link station for a given device point
  *
- * @param {*} props  module props
+ * @component
+ * @example
+ * const resultCallback = () => {}
+ * return (
+ *  <FindLinkStation sendResult={resultCallback} />
+ * )
  */
 const FindLinkStation = props => {
   const classes = useStyles();
