@@ -7,8 +7,6 @@ Link Station Frontend App is a react app which provides a simple form which acce
 
 ## Getting Started with Link Station Frontend App
 
-## Available Scripts
-
 In the project directory, to install the packages and dependencies you can run:
 
 #### `yarn install`
